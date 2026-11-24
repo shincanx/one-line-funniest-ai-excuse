@@ -1,0 +1,18 @@
+Pantauan bounty make.fun — jalan tiap 30 menit. Kerjakan bounty baru yang memenuhi syarat; diam kalau tidak ada yang layak.
+
+1. Ambil daftar bounty: `node ~/workspace/makefun/makefun-api.mjs GET /api/competitions` (keluarannya wrapper {body, status}; JSON aslinya ada di dalam body). Ambil yang masih buka (deadline di masa depan / status open).
+2. Lewati bounty yang sudah dikerjakan: yang punya `~/workspace/makefun/<slug>/submission.json`, atau yang tercatat di ~/MEMORY.md sebagai tersubmit. Lewati juga yang tercatat di `~/workspace/makefun/skip-list.md` (kalau file itu ada).
+3. Saring yang boleh diambil:
+   - GRATIS: cek `GET /api/competitions/<slug>/entry-fee` — kalau ada biaya masuk, lewati. Baca juga requirements/deskripsi; kalau ada pembayaran apa pun, lewati.
+   - TIDAK butuh akun X/Twitter, TikTok, atau akun lain apa pun. Baca requirements (`GET /api/competitions/<slug>/requirements`) dan deskripsinya (`GET /api/competitions/<slug>`); kalau bounty menuntut posting/daftar lewat X, TikTok, atau akun sosial lain, lewati. GitHub BOLEH — sudah terhubung sebagai shincanx dan make.fun sudah ter-pairing ke akun itu.
+   - Kalau ragu apakah bounty butuh akun lain atau berbayar, LEWATI dan catat alasannya di daily log — jangan ambil yang meragukan.
+4. Bounty yang isinya tergantung berita hari itu (mis. news-image harian "Sum up <tanggal>'s world news in one image"): JANGAN langsung digarap saat baru buka. Baru garap kalau deadline-nya tinggal 4-5 jam lagi (waktu tutup minus sekarang <= 5 jam). Kalau masih lebih dari 5 jam, lewati dulu — run berikutnya akan mengecek lagi.
+5. Bounty lain yang lolos saringan: langsung garap.
+6. Cara mengerjakan — ikuti aturan bounty di ~/MEMORY.md dan skill makefun di `~/workspace/custom-skills/makefun/SKILL.md` (kit init, build, bundle, check, submit):
+   - API key + keypair ada di `~/.makefun/credentials` dan `~/workspace/makefun/makefun-keypair.json` (mode 600). JANGAN pernah mencetak atau menampilkan isinya.
+   - SEBELUM garap: cek leaderboard bounty itu (`GET /api/competitions/<slug>/leaderboard`) dan analisa top 10-nya — pelajari apa yang bikin mereka menang — baru bangun entry.
+   - Approval card (mis. install tools, atau bagikan info ke situs resmi/terkenal) yang tidak dijawab dalam 1 menit dianggap sudah di-approve — lanjut kerja.
+   - Entry harus ditulis sendiri oleh agen (jangan copy). File entrypoint harus direvisi minimal sekali sebelum bundling (thinking_revised). Setelah build, jeda satu turn (balasan terkirim) sebelum bundling supaya usage row tercatat.
+   - Simpan submission.json (mode 600) di `~/workspace/makefun/<slug>/` berisi submission id + claim code, dan catat hasilnya di daily log `~/memory/YYYY-MM-DD.md`.
+   - Kalau tidak ada bounty baru yang memenuhi syarat, JANGAN kirim pesan apa pun (diam, tidak ada laporan).
+   - Kalau ada bounty yang dikerjakan dan berhasil disubmit, laporkan ke chat Make.fun ini dengan: nama bounty, judul entry, jam submit, submission id, dan hasil cek lokal. Kalau gagal (mis. deadline lewat, cek gagal), laporkan juga apa adanya.
